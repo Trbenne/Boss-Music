@@ -18,12 +18,12 @@ coolCats = []
 # initialize coolCatz list
 coolCatz = []
 
-# custom_filter_value = []
-
 # Initialize manual_filter
 manual_filter = False 
 # Initialize custom_pics
 custom_pics = False 
+
+custom_filter_value = HsvFilter(0, 180, 129, 15, 229, 243, 143, 0, 67, 0)
 
 # initialize string for open windows list
 string = ""
@@ -261,6 +261,7 @@ def Default(): # %%%
     vision_limestone2 = Vision('lights3_edges.jpg')
     
     if custom_pics:
+        print(frame.rectangle_pic_1.GetValue())
         solo_hp = Vision(str(frame.rectangle_pic_1.GetValue()))
         vision_limestone = Vision(frame.rectangle_pic_2.GetValue())
         vision_limestone2 = Vision(frame.rectangle_pic_3.GetValue())
@@ -314,26 +315,7 @@ def Default(): # %%%
                     sMax=custom_filter_value[4], vMax=custom_filter_value[5],
                     sAdd=custom_filter_value[6], sSub=custom_filter_value[7],
                     vAdd=custom_filter_value[8], vSub=custom_filter_value[9])
-                hsv_filter2 = HsvFilter( #  %%%
-                    hMin=custom_filter_value[10], sMin=custom_filter_value[11],
-                    vMin=custom_filter_value[12], hMax=custom_filter_value[13],
-                    sMax=custom_filter_value[14], vMax=custom_filter_value[15],
-                    sAdd=custom_filter_value[16], sSub=custom_filter_value[17],
-                    vAdd=custom_filter_value[18], vSub=custom_filter_value[19])
-                hsv_filter3 = HsvFilter( #  %%%
-                    hMin=custom_filter_value[20], sMin=custom_filter_value[21],
-                    vMin=custom_filter_value[22], hMax=custom_filter_value[23],
-                    sMax=custom_filter_value[24], vMax=custom_filter_value[25],
-                    sAdd=custom_filter_value[26], sSub=custom_filter_value[27],
-                    vAdd=custom_filter_value[28], vSub=custom_filter_value[29])
-                
-                edge_filter = EdgeFilter(kernelSize=custom_filter_value[30], 
-                    erodeIter=custom_filter_value[31], dilateIter=custom_filter_value[32], 
-                    canny1=custom_filter_value[33], canny2=custom_filter_value[34])
-                edge_filter2 = EdgeFilter(kernelSize=custom_filter_value[35], 
-                    erodeIter=custom_filter_value[36], dilateIter=custom_filter_value[37], 
-                    canny1=custom_filter_value[38], canny2=custom_filter_value[39])
-
+                # TODO: Here and DSIII add edge_filter stuff
             else:
                 hsv_filter = HsvFilter(0, 67, 13, 179, 255, 169, 0, 0, 13, 0)
                 hsv_filter2 = HsvFilter(0, 0, 0, 179, 255, 255, 0, 1, 255, 7)
@@ -370,7 +352,6 @@ def Default(): # %%%
     
         # display the processed images
         # TODO: Only Show if manual filter is clicked on
-        # if manual_filter or filterChoice:
         cv.imshow('Processed', processed_image)
         cv.imshow('Matches', output_image)
         cv.imshow('Edges', edges_image)
@@ -387,8 +368,8 @@ def Default(): # %%%
 
 def DemonSouls():
     
-    global manual_filter
-    global filterChoice
+    global manual_filter # %%%
+    global filterChoice # %%%
     global wincap
     global custom_filter_value
     global boss
@@ -398,11 +379,11 @@ def DemonSouls():
     # initialize the Vision class
     ## this one is the trend setter
     solo_hp = Vision('demon_souls_processed_22.jpg')
-    # TODO: Add Edges 
-    vision_edges_1 = Vision('demon_souls_processed_22.jpg') # demon_edges_1.jpg
-    vision_edges_2 = Vision('demon_souls_processed_22.jpg') # demon_edges_2.jpg
+    vision_edges_1 = Vision('demon_edges_1.jpg')
+    vision_edges_2 = Vision('demon_edges_2.jpg')
     
     if custom_pics:
+        print(frame.rectangle_pic_1.GetValue())
         solo_hp = Vision(str(frame.rectangle_pic_1.GetValue()))
         vision_edges_1 = Vision(frame.rectangle_pic_2.GetValue())
         vision_edges_2 = Vision(frame.rectangle_pic_3.GetValue())
@@ -436,25 +417,6 @@ def DemonSouls():
                     sMax=custom_filter_value[4], vMax=custom_filter_value[5],
                     sAdd=custom_filter_value[6], sSub=custom_filter_value[7],
                     vAdd=custom_filter_value[8], vSub=custom_filter_value[9])
-                hsv_filter2 = HsvFilter( #  %%%
-                    hMin=custom_filter_value[10], sMin=custom_filter_value[11],
-                    vMin=custom_filter_value[12], hMax=custom_filter_value[13],
-                    sMax=custom_filter_value[14], vMax=custom_filter_value[15],
-                    sAdd=custom_filter_value[16], sSub=custom_filter_value[17],
-                    vAdd=custom_filter_value[18], vSub=custom_filter_value[19])
-                hsv_filter3 = HsvFilter( #  %%%
-                    hMin=custom_filter_value[20], sMin=custom_filter_value[21],
-                    vMin=custom_filter_value[22], hMax=custom_filter_value[23],
-                    sMax=custom_filter_value[24], vMax=custom_filter_value[25],
-                    sAdd=custom_filter_value[26], sSub=custom_filter_value[27],
-                    vAdd=custom_filter_value[28], vSub=custom_filter_value[29])
-                
-                edge_filter = EdgeFilter(kernelSize=custom_filter_value[30], 
-                    erodeIter=custom_filter_value[31], dilateIter=custom_filter_value[32], 
-                    canny1=custom_filter_value[33], canny2=custom_filter_value[34])
-                edge_filter2 = EdgeFilter(kernelSize=custom_filter_value[35], 
-                    erodeIter=custom_filter_value[36], dilateIter=custom_filter_value[37], 
-                    canny1=custom_filter_value[38], canny2=custom_filter_value[39])
             else:
                 hsv_filter = HsvFilter(0, 160, 63, 179, 218, 198, 114, 45, 48, 0)
             processed_image = solo_hp.apply_hsv_filter(screenshot, hsv_filter)
@@ -476,10 +438,9 @@ def DemonSouls():
         output_image = solo_hp.draw_rectangles(screenshot, rectangles) # %
     
         # display the processed image
-        # if manual_filter:
         cv.imshow('Processed', processed_image)
         cv.imshow('Matches', output_image)
-
+    
         # press 'q' with the output window focused to exit.
         # waits 1 ms every loop to process key presses
         if cv.waitKey(1) == ord('q') or kill:
@@ -501,11 +462,11 @@ def DarkSoulsII():
     global i
     
     solo_hp = Vision('photo1.jpg')
-    # TODO: Add Edges 
     vision_edges_1 = Vision('ds2_healf_2.jpg') # Or 22? if being bad...
-    vision_edges_2 = Vision('ds2_healf_2.jpg') # ds2_edges.jpg
+    vision_edges_2 = Vision('ds2_edges.jpg')
     
     if custom_pics:
+        print(frame.rectangle_pic_1.GetValue())
         solo_hp = Vision(str(frame.rectangle_pic_1.GetValue()))
         vision_edges_1 = Vision(frame.rectangle_pic_2.GetValue())
         vision_edges_2 = Vision(frame.rectangle_pic_3.GetValue())
@@ -561,29 +522,6 @@ def DarkSoulsII():
                     sMax=custom_filter_value[4], vMax=custom_filter_value[5],
                     sAdd=custom_filter_value[6], sSub=custom_filter_value[7],
                     vAdd=custom_filter_value[8], vSub=custom_filter_value[9])
-                hsv_filter2 = HsvFilter( #  %%%
-                    hMin=custom_filter_value[10], sMin=custom_filter_value[11],
-                    vMin=custom_filter_value[12], hMax=custom_filter_value[13],
-                    sMax=custom_filter_value[14], vMax=custom_filter_value[15],
-                    sAdd=custom_filter_value[16], sSub=custom_filter_value[17],
-                    vAdd=custom_filter_value[18], vSub=custom_filter_value[19])
-                hsv_filter3 = HsvFilter( #  %%%
-                    hMin=custom_filter_value[20], sMin=custom_filter_value[21],
-                    vMin=custom_filter_value[22], hMax=custom_filter_value[23],
-                    sMax=custom_filter_value[24], vMax=custom_filter_value[25],
-                    sAdd=custom_filter_value[26], sSub=custom_filter_value[27],
-                    vAdd=custom_filter_value[28], vSub=custom_filter_value[29])
-                
-                edge_filter = EdgeFilter(kernelSize=custom_filter_value[30], 
-                                          erodeIter=custom_filter_value[31], 
-                                          dilateIter=custom_filter_value[32], 
-                                          canny1=custom_filter_value[33], 
-                                          canny2=custom_filter_value[34])
-                edge_filter2 = EdgeFilter(kernelSize=custom_filter_value[35], 
-                                          erodeIter=custom_filter_value[36], 
-                                          dilateIter=custom_filter_value[37], 
-                                          canny1=custom_filter_value[38], 
-                                          canny2=custom_filter_value[39])
             else:
                 hsv_filter = HsvFilter(0, 67, 13, 179, 255, 169, 0, 0, 13, 0)
                 hsv_filter2 = HsvFilter(0, 0, 0, 179, 255, 255, 0, 1, 255, 7)
@@ -620,7 +558,6 @@ def DarkSoulsII():
     
         # display the processed images
         # TODO: Only Show if manual filter is clicked on
-        # if manual_filter:
         cv.imshow('Processed', processed_image)
         cv.imshow('Matches', output_image)
         cv.imshow('Edges', edges_image)
@@ -656,6 +593,7 @@ def DarkSoulsIII():
     vision_limestone2 = Vision('lights3_edges.jpg')
     
     if custom_pics:
+        print(frame.rectangle_pic_1.GetValue())
         solo_hp = Vision(str(frame.rectangle_pic_1.GetValue()))
         vision_limestone = Vision(frame.rectangle_pic_2.GetValue())
         vision_limestone2 = Vision(frame.rectangle_pic_3.GetValue())
@@ -710,30 +648,6 @@ def DarkSoulsIII():
                     sMax=custom_filter_value[4], vMax=custom_filter_value[5],
                     sAdd=custom_filter_value[6], sSub=custom_filter_value[7],
                     vAdd=custom_filter_value[8], vSub=custom_filter_value[9])
-                hsv_filter2 = HsvFilter( #  %%%
-                    hMin=custom_filter_value[10], sMin=custom_filter_value[11],
-                    vMin=custom_filter_value[12], hMax=custom_filter_value[13],
-                    sMax=custom_filter_value[14], vMax=custom_filter_value[15],
-                    sAdd=custom_filter_value[16], sSub=custom_filter_value[17],
-                    vAdd=custom_filter_value[18], vSub=custom_filter_value[19])
-                hsv_filter3 = HsvFilter( #  %%%
-                    hMin=custom_filter_value[20], sMin=custom_filter_value[21],
-                    vMin=custom_filter_value[22], hMax=custom_filter_value[23],
-                    sMax=custom_filter_value[24], vMax=custom_filter_value[25],
-                    sAdd=custom_filter_value[26], sSub=custom_filter_value[27],
-                    vAdd=custom_filter_value[28], vSub=custom_filter_value[29])
-                
-                edge_filter = EdgeFilter(kernelSize=custom_filter_value[30], 
-                                          erodeIter=custom_filter_value[31], 
-                                          dilateIter=custom_filter_value[32], 
-                                          canny1=custom_filter_value[33], 
-                                          canny2=custom_filter_value[34])
-                edge_filter2 = EdgeFilter(kernelSize=custom_filter_value[35], 
-                                          erodeIter=custom_filter_value[36], 
-                                          dilateIter=custom_filter_value[37], 
-                                          canny1=custom_filter_value[38], 
-                                          canny2=custom_filter_value[39])
-                
             else:
                 hsv_filter = HsvFilter(0, 67, 13, 179, 255, 169, 0, 0, 13, 0)
                 hsv_filter2 = HsvFilter(0, 0, 0, 179, 255, 255, 0, 1, 255, 7)
@@ -770,7 +684,6 @@ def DarkSoulsIII():
     
         # display the processed images
         # TODO: Only Show if manual filter is clicked on
-        # if manual_filter:
         cv.imshow('Processed', processed_image)
         cv.imshow('Matches', output_image)
         cv.imshow('Edges', edges_image)
@@ -822,14 +735,13 @@ class MainWindow(wx.Frame):
         # Button...
         self.button = wx.Button(self, -1, "Okay")
         self.quit = wx.Button(self, -1, "Quit")
-        # Set up button for custom photos
-        self.photo_button = wx.ToggleButton(self, pos=(750,15), label="Custom Photos")
-        # Toggles Filter On and Off
+        #  %%% Set up button for custom photos
+        self.photo_button = wx.ToggleButton(self, pos=(750,30), label="Custom Photos")
+        # Toggles Filter On and Off %%%
         self.hsvgui = wx.ToggleButton(self, pos=(270,237), label="Manual Filter")
        
-        # Toggle custom filter usage
-        self.custom_hsv = wx.ToggleButton(self, pos=(760,165), label="Custom Filter:")
-                                                    # 50, 155
+        # Toggle custom filter usage %%%
+        self.custom_hsv = wx.ToggleButton(self, pos=(50,155), label="Custom Filter:")
        
         # Set Events
         self.Bind(wx.EVT_MENU, self.OnAbout, menuAbout)
@@ -845,33 +757,30 @@ class MainWindow(wx.Frame):
         self.slaps = wx.TextCtrl(self, -1, pos=(513, 133))
        
         # Adds user chosen filter option %%%
-        self.custom_filter_1 = wx.TextCtrl(self, -1, size=(230,23), pos=(700,198))
-        self.custom_filter_2 = wx.TextCtrl(self, -1, size=(230,23), pos=(700,228))
-        self.custom_filter_3 = wx.TextCtrl(self, -1, size=(230,23), pos=(700,258))
-        self.custom_edge_filter = wx.TextCtrl(self, -1, size=(230,23), pos=(700,288))
-        
+        self.custom_filter = wx.TextCtrl(self, -1, size=(230,23), pos=(5,183))
+        self.custom_edge_filter_1 = wx.TextCtrl(self, -1, size=(230,23), pos=(5,211))
+        self.custom_edge_filter_2 = wx.TextCtrl(self, -1, size=(230,23), pos=(5,239))
         # set default value for custom_filters
-        self.custom_filter_1.SetValue("0, 0, 0, 179, 255, 255, 0, 0, 0, 0")
-        self.custom_filter_2.SetValue("0, 0, 0, 179, 255, 255, 0, 0, 0, 0")
-        self.custom_filter_3.SetValue("0, 0, 0, 179, 255, 255, 0, 0, 0, 0")
-        self.custom_edge_filter.SetValue("5, 1, 1, 100, 200, 5, 1, 1, 100, 200")
+        self.custom_filter.SetValue("0, 0, 0, 179, 255, 255, 0, 0, 0, 0")
+        self.custom_edge_filter_1.SetValue("5, 1, 1, 100, 200")
+        self.custom_edge_filter_2.SetValue("5, 1, 1, 100, 200")
+               
+        # make rectangle picture input boxes %%%
+        self.rectangle_pic_1 = wx.TextCtrl(self, -1, pos = (805,70))
+        self.rectangle_pic_2 = wx.TextCtrl(self, -1, pos = (805,110))
+        self.rectangle_pic_3 = wx.TextCtrl(self, -1, pos = (805,150))
+        self.rectangle_pic_1.Enable(False)
+        self.rectangle_pic_2.Enable(False)
+        self.rectangle_pic_3.Enable(False)
         
         #   %%%
         # Text Boxes that take user input for uploading pictures
         self.R1 = wx.StaticText(self, -1, style = wx.LC_REPORT,
-                                pos = (700,53), label = "Min Health Picture")
+                                pos = (700,73), label = "Min Health Picture")
         self.R2 = wx.StaticText(self, -1, style = wx.LC_REPORT,
-                                pos = (700,86), label = "Half Empty Outline")
+                                pos = (700,113), label = "Half Empty Outline")
         self.R3 = wx.StaticText(self, -1, style = wx.LC_REPORT,
-                                pos = (715,119), label = "Half Full Outline")
-        
-        # make rectangle picture input boxes %%%
-        self.rectangle_pic_1 = wx.TextCtrl(self, -1, pos = (805,50))
-        self.rectangle_pic_2 = wx.TextCtrl(self, -1, pos = (805,83))
-        self.rectangle_pic_3 = wx.TextCtrl(self, -1, pos = (805,116))
-        self.rectangle_pic_1.Enable(False)
-        self.rectangle_pic_2.Enable(False)
-        self.rectangle_pic_3.Enable(False)
+                                pos = (715,155), label = "Half Full Outline")
        
         # Add Static Text
         self.AddStaticText(pos = (519,5), label = "Tasty Jams")
@@ -888,9 +797,8 @@ class MainWindow(wx.Frame):
       
         # adding check boxes for music selection
         self.addJamCheckBox(pos = (450,30), 
-                            names = ["johnathan.wav","jotaro.wav","josuke.wav",
-                                     "giorno.wav","doomer.wav","jotaroVDio.wav",
-                                     "Manual"])
+                            names = ["giorno.wav","johnathan.wav","jotaro.wav","doomer.wav",
+                            "jotaroVDio.wav","where all the white women at?.wav","Manual"])
         # TODO: fix above .wav files
         
         #  %%%
@@ -953,7 +861,7 @@ class MainWindow(wx.Frame):
         self.tasty_jams = wx.CheckListBox(
             self,
             name="Select Soundtracks", pos = pos,
-            size = (215,150),
+            size = (215,130),
             choices=names)
        
         self.tasty_jams.SetCheckedItems([0,1,2,3,4,5])
@@ -962,12 +870,19 @@ class MainWindow(wx.Frame):
         return (self.tasty_jams)
    
     
+    #   %%%
     def OnManual(self,e):
        
         self.preset = self.manual_options.GetStringSelection()
+        # if self.preset == "custom":
+        #     print("make pop-up eerrror here")
+        #     global kill
+        #     kill = True 
    
    
     def onRadioBox(self,e):
+        
+        print (self.visualization_radiobox.GetStringSelection(),' is clicked from Radio Box')
         
         self.game = self.visualization_radiobox.GetStringSelection()
         
@@ -1034,66 +949,43 @@ class MainWindow(wx.Frame):
         filterChoice = self.custom_hsv.GetValue() #  %%%
                
         if filterChoice: #  %%%
-        
-            string = self.custom_filter_1.GetValue() # %%%
-            string_2 = self.custom_filter_2.GetValue()
-            string_3 = self.custom_filter_3.GetValue()
-            string_4 = self.custom_edge_filter.GetValue()
-            
-            custom_filter_value = list(eval(string)) #  %%% str(eval(string))
-            
+            string = self.custom_filter.GetValue() # %%%
+            string_2 = self.custom_edge_filter_1.GetValue()
+            string_3 = self.custom_edge_filter_2.GetValue()
+            custom_filter_value = list(eval(string)) #  %%%
             for s in eval(string_2):
                 custom_filter_value.append(s)
             for s in eval(string_3):
                 custom_filter_value.append(s)
-            for s in eval(string_4):
-                custom_filter_value.append(s)
-                
-            if len(custom_filter_value) < 40:
-            
-                # A message dialog box with an OK button. wx.OK is a standard ID in wxWidgets.
-                dlg = wx.MessageDialog(self,
-                        "Counting Error, idiot:\n\n"
-                        "You need to have 40 inputs for your custom filter to work",
-                        "Sorry M8:")
-                
-                dlg.ShowModal() # Show It
-                dlg.Destroy() # Destroy it when finished
-                
-                # break out of function...
-                return
-
+            i = 1
+            for s in custom_filter_value:
+                print("{}: {}".format(i,s))
+                i+=1
+       
         wincap = WindowCapture(self.game)
 
         if self.game == "Demon's Souls (original)":
             DemonSouls()
-            
         elif  self.game == "Dark Souls: Remastered":
             print("we should be running DSI now...")
-        
         elif  self.game == "Dark Souls II":
             print("we should be running DSII now...")
             DarkSoulsII()
-        
         elif  self.game == "Dark Souls III":
+            print("we should be running DSIII now...")
             DarkSoulsIII()
-        
         else:
-            self.game = self.ic.GetValue()
+            self.game = self.ic.GetValue() # %%%%
             wincap = WindowCapture(self.game)
-        
+            print("Manual Entry: ", self.game)
             if self.preset == "Demon's Souls (original)":
                 DemonSouls()
-            
             elif  self.preset == "Dark Souls: Remastered":
                 print("we should be running manual DSI now...")
-            
             elif  self.preset == "Dark Souls II":
-                DarkSoulsII()
-            
+                print("we should be running manual DSII now...")
             elif  self.preset == "Dark Souls III":
-                DarkSoulsIII()
-            
+                print("we should be running manual DSIII now...")
             elif self.preset == "Default":
                 Default()
    
@@ -1120,6 +1012,7 @@ class MainWindow(wx.Frame):
                         "About:")
         
         dlg.ShowModal() # Show It
+        
         dlg.Destroy() # Destroy it when finished
        
         
@@ -1129,29 +1022,11 @@ class MainWindow(wx.Frame):
         dlg = wx.MessageDialog(self,
                         "Games:\n When inputing a manual game name, "
                         "refer to the textfield of current programs\n"
-                        "This allows you to use preset options for object detection "
-                        "while also scanning a non-coded program (such as OBS)\n"
                         "\nTasty Jams:\n When inputing a manual jam, specify the path."
                         "ie: C://User//Paul_Blart//desktop"
                         "\n      Use double '//'s to avoid making the program angry\n"
                         "\nDemon's Souls:\n Demon's Souls' name must be adjusted"
-                        " in RPCS3 to 'Demon's Souls (original)'\n"
-                        "\nFilters:\n"
-                        "     Manual Filter enables the filter toggle window, use this "
-                        "to find the filter inputs for the Custom Filter options\n"
-                        "     Custom Filter takes input for filter options for custom"
-                        " photos.\n"
-                        "The input goes from top to bottom..."
-                        "\n          HSV Filter 1 (10 inputs)"
-                        "\n          HSV Filter 2 (10 inputs)"
-                        "\n          HSV Filter 3 (10 inputs)"
-                        "\n          Edge Filters 1 and 2 (10 inputs)\n"
-                        "This option and the custom photo option probably won't work "
-                        "well if you don't know what's going on\n"
-                        "\nCustom Photos:\n"
-                        " This option allows you to use custom photos for object detection."
-                        "The photos you use should be cropped screenshots of the "
-                        "filtered image found using manual filter.\n",
+                        " in RPCS3 to 'Demon's Souls'\n",
                         "Helps:\n")
         
         dlg.ShowModal() # Show It
@@ -1173,27 +1048,29 @@ app = wx.App(False)
 frame = MainWindow(None, "Epic Finishers")
 frame.Show(True)
 app.MainLoop()
-
+# ! have to add in ability to use custom photos
+#  and eventually even add filter to said photos
+# if "Manual" photo, activate filter...
 # They'll have to screenshot the filter and then make custom jpg...
-#   Then add manual filter button with array for filter
+#   Then add manual filter button with array for filter, (Gut the Demon() function)
+# !* For Filter; just use filter on/off switch to make it. Then adjust Demon() accordingly.
 #       Add filter help with instructions to not use it unless you know how to...
+# use Victory Achieved??? for pog champ???
 
+# if "Manual" photo, activate filter...
+# They'll have to screenshot the filter and then make custom jpg...
+#   Then add manual filter button with array for filter, (Gut the Demon() function)
+#       Add filter help with instructions to not use it unless you know how to...
 # Change RPCS3 emulator to Demon's Souls (original) and change program to not change name of Demon's Souls
 # Reorganize program to look nice
 
-# TODO: Add instructions to help for custom filter order...
-    ## If they only put an int and no comma, eval gets angry and str() didn't fix it...
-    
-# Increase volume for pog champ and god/anime .wav files
+# TODO: Might have to change filter inputs to use all one line for all 15
 
-# maybe add custom threshold to all pics?
-
-# Document, Document, Document!!!
+## inputs for all 3 pictures so that the edge filters can use hsv filtering too
+# Document, Document, Document!!! %%%
 # def Default():
     # if custom pics:
         # use custom pics
         # run rectCheck
     # else:
         # don't run rectCheck
-        
-# add hsv and edge filters and pics for demon's souls and dsII...
