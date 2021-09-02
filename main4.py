@@ -21,7 +21,7 @@ coolCats = []
 # initialize coolCatz list
 coolCatz = []
 
-# custom_filter_value = []
+# custom_filter_value = HsvFilter(blah)
 
 # Initialize manual_filter
 manual_filter = False 
@@ -46,10 +46,10 @@ pygame.mixer.music.set_volume(0.7)
 # giorno = pygame.mixer.Sound('giorno.wav') # Giorno Theme
 # doomer = pygame.mixer.Sound('doomer.wav') # play doom metal music
 # jotaroVDio = pygame.mixer.Sound('jotaroVDio.wav') # I have to come closer...
-# anime = pygame.mixer.Sound('godANDanime.wav')
-# pog_champ = pygame.mixer.Sound('pog.wav')
+anime = pygame.mixer.Sound('godANDanime.wav')
+pog_champ = pygame.mixer.Sound('pog.wav')
 
-# anime.set_volume(1)
+anime.set_volume(1)
 
 hsv_filter = HsvFilter(0, 0, 0, 179, 255, 255, 0, 0, 0, 0)
 hsv_filter2 = HsvFilter(0, 0, 0, 179, 255, 255, 0, 0, 0, 0)
@@ -97,7 +97,7 @@ def check_rectangles(rect1, rect2, rect3):
     rect3: edge detection of half empty health bar
     """
     
-    global rectTrue, TastyJams, i # use global
+    global rectTrue, i # use global
     global boss
     global coolCatz
     global anime, pog_champ
@@ -168,50 +168,50 @@ def check_rectangles(rect1, rect2, rect3):
         boss = False
 
         
-# def TastyJams():
+def TastyJams():
 
-#     global coolCatz
-#     global anime
-#     global johnathan, jotaro, josuke, giorno, doomer, pog_champ
+    global coolCatz
+    global anime
+    global johnathan, jotaro, josuke, giorno, doomer, pog_champ
     
-#     anime.set_volume(1)
-#     anime.play()
+    anime.set_volume(1)
+    anime.play()
     
-#     # t_now = time.time() + 60
+    # t_now = time.time() + 60
             
-#     # while time.time() <= t_now:
+    # while time.time() <= t_now:
         
-#     # initialize the random number
-#     rand = random.randint(0,9)
+    # initialize the random number
+    rand = random.randint(0,9)
     
-#     # currentSound = test
-#     # pygame.mixer.music.load('test.wav')
+    # currentSound = test
+    # pygame.mixer.music.load('test.wav')
 
-#     # this if-else stream is to play a random theme
-#     # this if-else stream is to play a random theme
-#     if rand <= 1 and not pygame.mixer.music.get_busy():
-#         currentSound = coolCatz[0]
-#         pygame.mixer.music.load(coolCatz[0])
+    # this if-else stream is to play a random theme
+    # this if-else stream is to play a random theme
+    if rand <= 1 and not pygame.mixer.music.get_busy():
+        currentSound = coolCatz[0]
+        pygame.mixer.music.load(coolCatz[0])
        
-#     elif rand <= 3 and not pygame.mixer.music.get_busy():
-#         currentSound = coolCatz[1]
-#         pygame.mixer.music.load(coolCatz[1])
+    elif rand <= 3 and not pygame.mixer.music.get_busy():
+        currentSound = coolCatz[1]
+        pygame.mixer.music.load(coolCatz[1])
    
-#     elif rand <= 5 and not pygame.mixer.music.get_busy():
-#         currentSound = coolCatz[2]
-#         pygame.mixer.music.load(coolCatz[2])
+    elif rand <= 5 and not pygame.mixer.music.get_busy():
+        currentSound = coolCatz[2]
+        pygame.mixer.music.load(coolCatz[2])
    
-#     elif rand <= 7 and not pygame.mixer.music.get_busy():
-#         currentSound = coolCatz[3]
-#         pygame.mixer.music.load(coolCatz[3])
+    elif rand <= 7 and not pygame.mixer.music.get_busy():
+        currentSound = coolCatz[3]
+        pygame.mixer.music.load(coolCatz[3])
    
-#     elif rand <= 9 and not pygame.mixer.music.get_busy():
-#         currentSound = coolCatz[4]
-#         pygame.mixer.music.load(coolCatz[4])
+    elif rand <= 9 and not pygame.mixer.music.get_busy():
+        currentSound = coolCatz[4]
+        pygame.mixer.music.load(coolCatz[4])
     
-#     # if rand <= 0 and not pygame.mixer.music.get_busy():
-#     #     currentSound = johnathan
-#     #     pygame.mixer.music.load('johnathan.wav')
+    # if rand <= 0 and not pygame.mixer.music.get_busy():
+    #     currentSound = johnathan
+    #     pygame.mixer.music.load('johnathan.wav')
                   
                     
 
@@ -224,9 +224,9 @@ def rectCheck(rect):
     low enough that it doesn't register, music begins
     
     """
-   
+
     global rectTrue, TastyJams # use global
-   
+
     # if there is no matching hp, but there was one last iteration, play music
     if rect.size < 1 and rectTrue:
                 
@@ -234,7 +234,7 @@ def rectCheck(rect):
         
         # reset rectTrue
         rectTrue = False
-   
+
     # check if there is a health bar with matching hp
     if rect.size >= 1:
         rectTrue = True
