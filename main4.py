@@ -37,24 +37,18 @@ for n in wincap.win_list:
 
 pygame.mixer.init()
 
-# initialize Jojo's themes
+# initialize music mixes
 pygame.mixer.music.set_volume(0.7)
-# test = pygame.mixer.Sound('test.wav')
-# johnathan = pygame.mixer.Sound('johnathan.wav') # johnny's Theme
-# jotaro = pygame.mixer.Sound('jotaro.wav') # jotaro Theme
-# josuke = pygame.mixer.Sound('josuke.wav') # Josuke
-# giorno = pygame.mixer.Sound('giorno.wav') # Giorno Theme
-# doomer = pygame.mixer.Sound('doomer.wav') # play doom metal music
-# jotaroVDio = pygame.mixer.Sound('jotaroVDio.wav') # I have to come closer...
 anime = pygame.mixer.Sound('godANDanime.wav')
 pog_champ = pygame.mixer.Sound('pog.wav')
-
 anime.set_volume(1)
 
+# TODO: see if it's necessary to initialize these filters, if so, add edges
+# initialize starting filters
 hsv_filter = HsvFilter(0, 0, 0, 179, 255, 255, 0, 0, 0, 0)
 hsv_filter2 = HsvFilter(0, 0, 0, 179, 255, 255, 0, 0, 0, 0)
 
-rectTrue = False # global variable %
+rectTrue = False # global variable % TODO
 kill = False # global variable %
 
 # initialize the Vision class
@@ -80,12 +74,6 @@ kill = False # global variable %
 #     print(wincap.name)
 #     print("DS3")
 
-
-# initialize the trackbar window
-# vis.init_control_gui()
-# vision_hp.init_control_gui()
-   
-
 def check_rectangles(rect1, rect2, rect3):
     """ 
     Checks if the boss' health bar is present and if there is at least a 
@@ -97,7 +85,7 @@ def check_rectangles(rect1, rect2, rect3):
     rect3: edge detection of half empty health bar
     """
     
-    global rectTrue, i # use global
+    global rectTrue, anime_check # use global
     global boss
     global coolCatz
     global anime, pog_champ
@@ -106,9 +94,9 @@ def check_rectangles(rect1, rect2, rect3):
     if rect1.size <= 2 and boss:
         
         # checks i, which is only used to check if anime has played once
-        if i == False:
+        if anime_check == False:
             anime.play()
-            i = True
+            anime_check = True
         
         # !!! % may be pointless, but rectTrue checks if min health is present
         rectTrue = False
@@ -152,14 +140,14 @@ def check_rectangles(rect1, rect2, rect3):
                 # time.sleep(15)
                     
     # checks if the boss is dead, and makes sure that it 
-    # only plays after boss fight by checking i
-    if (not boss) and i:     
+    # only plays after boss fight by checking anime_check
+    if (not boss) and anime_check:     
         # gives 5 second leeway to ensure pog_champ plays after 
         # other music at end of boss fight
         time.sleep(5) 
         pog_champ.play()
         time.sleep(pog_champ.get_length()) # delays everything until pog_champ has finished
-        i = False # reset i so that anime and pog_champ will play next boss fight
+        anime_check = False # reset i so that anime and pog_champ will play next boss fight
         
     # check if there is a boss health bar present
     if rect2.size >= 1 or rect3.size >= 1:
@@ -172,7 +160,7 @@ def TastyJams():
 
     global coolCatz
     global anime
-    global johnathan, jotaro, josuke, giorno, doomer, pog_champ
+    global pog_champ
     
     anime.set_volume(1)
     anime.play()
@@ -225,7 +213,7 @@ def rectCheck(rect):
     
     """
 
-    global rectTrue, TastyJams # use global
+    global rectTrue # use global
 
     # if there is no matching hp, but there was one last iteration, play music
     if rect.size < 1 and rectTrue:
@@ -242,7 +230,7 @@ def rectCheck(rect):
         rectTrue = False
         
         
-def Default(): # %%%
+def default(): # %%%
 # TODO: Default Checks %%%
    
     global manual_filter # %%%
@@ -251,7 +239,7 @@ def Default(): # %%%
     global custom_filter_value
     global boss
     global kill
-    global i
+    global anime_check
     
     # initialize the Vision class
     # min hp
@@ -278,7 +266,7 @@ def Default(): # %%%
     
     # initialize boss and i as false so that the music won't run until a boss is present
     boss = False
-    i = False
+    anime_check = False
     
     # # HSV and edge filters for respective pictures
     # hsv_filter = HsvFilter(0, 67, 13, 179, 255, 169, 0, 0, 13, 0)
@@ -388,7 +376,7 @@ def Default(): # %%%
             break
     
 
-def DemonSouls():
+def demon_souls():
     
     global manual_filter
     global filterChoice
@@ -396,7 +384,7 @@ def DemonSouls():
     global custom_filter_value
     global boss
     global kill
-    global i
+    global anime_check
     
     # initialize the Vision class
     ## this one is the trend setter
@@ -493,7 +481,7 @@ def DemonSouls():
         # TODO: Demon's Souls: Remastered, DS1/DS1: Remastered
         
         
-def DarkSoulsII():    
+def darkSoulsII():    
     
     global manual_filter # %%%
     global filterChoice # %%%
@@ -501,7 +489,7 @@ def DarkSoulsII():
     global custom_filter_value
     global boss
     global kill
-    global i
+    global anime_check
     
     solo_hp = Vision('photo1.jpg')
     # TODO: Add Edges 
@@ -525,7 +513,7 @@ def DarkSoulsII():
         
     # initialize boss and i as false so that the music won't run until a boss is present
     boss = False
-    i = False
+    anime_check = False
     
     # HSV and edge filters for respective pictures
     hsv_filter = HsvFilter(0, 67, 13, 179, 255, 169, 0, 0, 13, 0)
@@ -638,7 +626,7 @@ def DarkSoulsII():
             break
     
    
-def DarkSoulsIII():
+def darkSoulsIII():
     
     global manual_filter # %%%
     global filterChoice # %%%
@@ -646,7 +634,7 @@ def DarkSoulsIII():
     global custom_filter_value
     global boss
     global kill
-    global i
+    global anime_check
     
     # initialize the Vision class
     # min hp
@@ -674,7 +662,7 @@ def DarkSoulsIII():
     
     # initialize boss and i as false so that the music won't run until a boss is present
     boss = False
-    i = False
+    anime_check = False
     
     # HSV and edge filters for respective pictures
     hsv_filter = HsvFilter(0, 67, 13, 179, 255, 169, 0, 0, 13, 0)
@@ -835,12 +823,12 @@ class MainWindow(wx.Frame):
                                                     # 50, 155
        
         # Set Events
-        self.Bind(wx.EVT_MENU, self.OnAbout, menuAbout)
-        self.Bind(wx.EVT_MENU, self.OnExit, menuExit)
-        self.Bind(wx.EVT_MENU, self.OnHelp, menuHelp)
+        self.Bind(wx.EVT_MENU, self.onAbout, menuAbout)
+        self.Bind(wx.EVT_MENU, self.onExit, menuExit)
+        self.Bind(wx.EVT_MENU, self.onHelp, menuHelp)
         self.button.Bind(wx.EVT_BUTTON, self.onClicked) 
-        self.quit.Bind(wx.EVT_BUTTON, self.OnExit)
-        self.photo_button.Bind(wx.EVT_TOGGLEBUTTON, self.OnPic)
+        self.quit.Bind(wx.EVT_BUTTON, self.onExit)
+        self.photo_button.Bind(wx.EVT_TOGGLEBUTTON, self.onPic)
        
        
         # creating manual text entries
@@ -877,9 +865,9 @@ class MainWindow(wx.Frame):
         self.rectangle_pic_3.Enable(False)
        
         # Add Static Text
-        self.AddStaticText(pos = (519,5), label = "Tasty Jams")
-        self.AddStaticText(pos = (260,50), label = "Manual Presets...")
-        self.AddStaticText(pos = (450,285), label = "Current Windows")
+        self.addStaticText(pos = (519,5), label = "Tasty Jams")
+        self.addStaticText(pos = (260,50), label = "Manual Presets...")
+        self.addStaticText(pos = (450,285), label = "Current Windows")
        
         # outputs current programs and posts them in a read-only textbox
         self.current_Program_Output = wx.TextCtrl(self, -1, string, size = (500,200),
@@ -902,7 +890,7 @@ class MainWindow(wx.Frame):
                                        "Dark Souls: Remastered","Dark Souls II",
                                        "Dark Souls III","Default"],
                             pos = (240,75), majorDimension=1,style=wx.RA_SPECIFY_COLS)
-        self.manual_options.Bind(wx.EVT_RADIOBOX, self.OnManual) #   %%%
+        self.manual_options.Bind(wx.EVT_RADIOBOX, self.onManual) #   %%%
         self.manual_options.Enable(False) #  %%%
 
         # Add Spacer and Current Programs Textbox to the vbox
@@ -965,7 +953,7 @@ class MainWindow(wx.Frame):
         return (self.tasty_jams)
    
     
-    def OnManual(self,e):
+    def onManual(self,e):
        
         self.preset = self.manual_options.GetStringSelection()
    
@@ -981,13 +969,13 @@ class MainWindow(wx.Frame):
             self.manual_options.Enable(False) #  %%%
        
     
-    def OnPic(self, e): # %%%
+    def onPic(self, e): # %%%
         self.rectangle_pic_1.Enable(self.photo_button.GetValue())
         self.rectangle_pic_2.Enable(self.photo_button.GetValue())
         self.rectangle_pic_3.Enable(self.photo_button.GetValue())
         
     
-    def ReeChecked(self):
+    def reeChecked(self):
         
         global coolCats
         global coolCatz
@@ -1001,7 +989,7 @@ class MainWindow(wx.Frame):
             coolCatz.append(coolCat)
                    
        
-    def AddStaticText(self, pos, label, size = (75,23)):
+    def addStaticText(self, pos, label, size = (75,23)):
         
         # put some text
         self.st = wx.StaticText(self, -1, style = wx.LC_REPORT, size = size,
@@ -1029,7 +1017,7 @@ class MainWindow(wx.Frame):
         global custom_filter_value #  %%%
         global custom_pics #  %%%
        
-        self.ReeChecked()
+        self.reeChecked()
                
         # Check which toggles are checked on # %%%
         manual_filter = self.hsvgui.GetValue()
@@ -1069,38 +1057,38 @@ class MainWindow(wx.Frame):
         wincap = WindowCapture(self.game)
 
         if self.game == "Demon's Souls (original)":
-            DemonSouls()
+            demon_souls()
             
         elif  self.game == "Dark Souls: Remastered":
             print("we should be running DSI now...")
         
         elif  self.game == "Dark Souls II":
             print("we should be running DSII now...")
-            DarkSoulsII()
+            darkSoulsII()
         
         elif  self.game == "Dark Souls III":
-            DarkSoulsIII()
+            darkSoulsIII()
         
         else:
             self.game = self.ic.GetValue()
             wincap = WindowCapture(self.game)
         
             if self.preset == "Demon's Souls (original)":
-                DemonSouls()
+                demon_souls()
             
             elif  self.preset == "Dark Souls: Remastered":
                 print("we should be running manual DSI now...")
             
             elif  self.preset == "Dark Souls II":
-                DarkSoulsII()
+                darkSoulsII()
             
             elif  self.preset == "Dark Souls III":
-                DarkSoulsIII()
+                darkSoulsIII()
             
             elif self.preset == "Default":
-                Default()
+                default()
    
-    # def OnPictures(self, e):
+    # def onPictures(self, e):
         
     #     # A message dialog box with an OK button. wx.OK is a standard ID in wxWidgets.
     #     dlg = wx.MessageDialog(self,
@@ -1115,7 +1103,7 @@ class MainWindow(wx.Frame):
     #     dlg.Destroy() # Destroy it when finished
    
     
-    def OnAbout(self, e):
+    def onAbout(self, e):
         
         # A message dialog box with an OK button. wx.OK is a standard ID in wxWidgets.
         dlg = wx.MessageDialog(self,
@@ -1126,7 +1114,7 @@ class MainWindow(wx.Frame):
         dlg.Destroy() # Destroy it when finished
        
         
-    def OnHelp(self, e):
+    def onHelp(self, e):
         
         # Message about all help stuffs and info
         dlg = wx.MessageDialog(self,
@@ -1161,7 +1149,7 @@ class MainWindow(wx.Frame):
         dlg.Destroy() # Destroy it when finished
        
         
-    def OnExit(self, e):
+    def onExit(self, e):
         
         global kill
         
