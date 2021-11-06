@@ -71,8 +71,8 @@ kill = False # global variable %
 #     hsv_filter2 = HsvFilter(0, 160, 63, 179, 218, 198, 114, 45, 48, 0) # (0, 79, 36, 179, 152, 94, 0, 42, 29, 0)
 #     #hsv_filter2 = HsvFilter(0, 0, 0, 179, 255, 255, 0, 0, 0, 0)
 # elif wincap.name == "Dark Souls III" or wincap.name == "Screenshot (27).png - Paint":
-#     print(wincap.name)
-#     print("DS3")
+    # print(wincap.name)
+    # print("DS3")
 
 def check_rectangles(rect1, rect2, rect3):
     """ 
@@ -202,7 +202,6 @@ def TastyJams():
     #     pygame.mixer.music.load('johnathan.wav')
                   
                     
-
 def rectCheck(rect):
     """  %
     function rectCheck will check to see if the minimum health is still there,
@@ -326,11 +325,11 @@ def default(): # %%%
                     canny1=custom_filter_value[38], canny2=custom_filter_value[39])
 
             else:
-                hsv_filter = HsvFilter(0, 67, 13, 179, 255, 169, 0, 0, 13, 0)
-                hsv_filter2 = HsvFilter(0, 0, 0, 179, 255, 255, 0, 1, 255, 7)
-                hsv_filter3 = HsvFilter(0, 0, 44, 179, 0, 255, 0, 85, 255, 63)
-                edge_filter = EdgeFilter(3,3,3,88,151) #88, 151 || 200,81
-                edge_filter2 = EdgeFilter(8,2,1,200,500)
+                hsv_filter = HsvFilter(0, 0, 0, 179, 255, 255, 0, 0, 0, 0)
+                hsv_filter2 = HsvFilter(0, 0, 0, 179, 255, 255, 0, 0, 0, 0)
+                hsv_filter3 = HsvFilter(0, 0, 0, 179, 255, 255, 0, 0, 0, 0)
+                edge_filter = EdgeFilter(5, 1, 1, 100, 200) #88, 151 || 200,81
+                edge_filter2 = EdgeFilter(5, 1, 1, 100, 200)
                 
             # pre-process the image
             processed_image = solo_hp.apply_hsv_filter(screenshot, hsv_filter) # %
@@ -405,6 +404,10 @@ def demon_souls():
         vision_edges_1.init_control_gui() # %%%???
         vision_edges_2.init_control_gui() # %%%???
         # TODO: Do I need both pics???
+
+    # initialize boss and i as false so that the music won't run until a boss is present
+    boss = False
+    anime_check = False
     
     while(True):
     
@@ -416,6 +419,14 @@ def demon_souls():
             
             # solo_hp.edge GUI Stuff
             processed_image = solo_hp.apply_hsv_filter(screenshot) # %
+
+             # pre-process the image
+            processed_image2 = vision_edges_1.apply_hsv_filter(screenshot)
+            processed_image3 = vision_edges_2.apply_hsv_filter(screenshot)
+        
+            # do edge detection
+            edges_image = vision_edges_1.apply_edge_filter(processed_image2)
+            edges_image2 = vision_edges_2.apply_edge_filter(processed_image3)
             # Show processed image only if this is turned on...
             
         else:
@@ -446,37 +457,55 @@ def demon_souls():
                 edge_filter2 = EdgeFilter(kernelSize=custom_filter_value[35], 
                     erodeIter=custom_filter_value[36], dilateIter=custom_filter_value[37], 
                     canny1=custom_filter_value[38], canny2=custom_filter_value[39])
-            else:
+
+            else: #TODO: change for demon's souls
                 hsv_filter = HsvFilter(0, 160, 63, 179, 218, 198, 114, 45, 48, 0)
-            processed_image = solo_hp.apply_hsv_filter(screenshot, hsv_filter)
-        ###########################%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-   ## Here down needs review if it isn't replaced by DSIII code...
-        # # pre-process the image
-        # processed_image = vision_limestone.apply_hsv_filter(screenshot)
+                hsv_filter2 = HsvFilter(0, 0, 0, 179, 255, 255, 0, 1, 255, 7)
+                hsv_filter3 = HsvFilter(0, 0, 44, 179, 0, 255, 0, 85, 255, 63)
+                edge_filter = EdgeFilter(3,3,3,88,151) #88, 151 || 200,81
+                edge_filter2 = EdgeFilter(8,2,1,200,500)
+                
+            # pre-process the image
+            processed_image = solo_hp.apply_hsv_filter(screenshot, hsv_filter) # %
+            
+            # pre-process the image
+            processed_image2 = vision_edges_1.apply_hsv_filter(screenshot, hsv_filter2)
+            processed_image3 = vision_edges_2.apply_hsv_filter(screenshot, hsv_filter3)
+        
+            # do edge detection
+            edges_image = vision_edges_1.apply_edge_filter(processed_image2, edge_filter)
+            edges_image2 = vision_edges_2.apply_edge_filter(processed_image3, edge_filter2)
+
     
-        # # do edge detection
-        # edges_image = vision_limestone.apply_edge_filter(processed_image)
-    
-        # do object detection
-        rectangles = solo_hp.find(processed_image, 0.7) # %
-       
-        rectCheck(rectangles) # %
-       
-    
+        # do object detection for each picture
+        rectangles = solo_hp.find(processed_image, 0.95) # % 75 for full
+        rectangles2 = vision_edges_1.find(edges_image, 0.8)
+        rectangles3 = vision_edges_2.find(edges_image2, 0.8)
+        
+        # count number of matches
+        check_rectangles(rectangles, rectangles2, rectangles3)
+        
+      ############################################################
+        
         # draw the detection results onto the original image
         output_image = solo_hp.draw_rectangles(screenshot, rectangles) # %
+        edge = vision_edges_1.draw_rectangles(screenshot, rectangles2)
+        edge2 = vision_edges_2.draw_rectangles(screenshot, rectangles3)
     
-        # display the processed image
+        # display the processed images
+        # TODO: Only Show if manual filter is clicked on
         # if manual_filter:
         cv.imshow('Processed', processed_image)
         cv.imshow('Matches', output_image)
-
+        cv.imshow('Edges', edges_image)
+        # cv.imshow('Processed 2', processed_image2)
+        # cv.imshow('Edges', edge)
+    
         # press 'q' with the output window focused to exit.
         # waits 1 ms every loop to process key presses
         if cv.waitKey(1) == ord('q') or kill:
             cv.destroyAllWindows()
-            break   
-        
+            break
         
         # TODO: Demon's Souls: Remastered, DS1/DS1: Remastered
         
